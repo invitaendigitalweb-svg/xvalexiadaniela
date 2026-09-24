@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mis XV Años - Invitación</title>
+
+<!-- METATAGS DE CONFIGURACIÓN PARA MINIATURA DE WHATSAPP / REDES -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Estás invitado a mis XV">
+<meta property="og:description" content="Estás invitado a mis XV. Da clic para ver más detalles.">
+
+<!-- RUTA COMPLETA DE TU IMAGEN EN GITHUB PAGES -->
+<meta property="og:image" content="https://invitaendigitalweb-svg.github.io/bodaisabelymartin/miniatura.jpg">
+<meta property="og:image:secure_url" content="https://invitaendigitalweb-svg.github.io/bodaisabelymartin/miniatura.jpg">
+
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            background-color: #F9F8F5;
+            font-family: 'Cinzel', serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* MARCO DE CELULAR ADAPTABLE */
+        .mobile-screen {
+            width: 100%;
+            max-width: 430px;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            background-color: #F9F8F5;
+            box-shadow: 0 0 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        /* SCROLL INTERIOR SIN BARRA VISIBLE */
+        .invitation-wrapper {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            background-color: #F9F8F5;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-behavior: smooth;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .invitation-wrapper.open-portada {
+            opacity: 1;
+        }
+
+        .invitation-wrapper::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+
+        /* ESTILOS DE IMÁGENES GENERALES */
+        .image-section {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: block;
+            position: relative;
+            line-height: 0;
+            font-size: 0;
+            border: none;
+            outline: none;
+            overflow: hidden;
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+            padding: 0;
+            border: none;
+            outline: none;
+            vertical-align: bottom;
+        }
+
+        /* 1. PORTADA: COMPLETAMENTE ESTÁTICA */
+        .portada-section {
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .portada-section img {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* 2. FECHA: SOBREPUESTA LIGERAMENTE Y CON ANIMACIÓN DE SUBIDA */
+        .fecha-container {
+            position: relative;
+            z-index: 3;
+            margin-top: -30px;
+        }
+
+        /* CONTADOR: UNIDO CONTINUO CON LA FECHA */
+        .contador-section {
+            width: 100%;
+            padding: 20px 15px 35px 15px;
+            text-align: center;
+            background-color: #FEF4F3;
+            font-family: 'Montserrat', sans-serif;
+            line-height: normal;
+            position: relative;
+            z-index: 2;
+            margin-top: -1px;
+        }
+
+        .tiempo {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .unidad {
+            min-width: 70px;
+        }
+
+        .numero {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 50px;
+            line-height: 1;
+            color: #404040;
+            font-weight: 600;
+        }
+
+        .texto {
+            margin-top: 7px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #404040;
+        }
+
+        .separador {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 40px;
+            color: #404040;
+            line-height: 1;
+            margin-top: 2px;
+        }
+
+        /* SECCIÓN DE REGALO CON EFECTO BORROSO ÚNICO */
+        .gift-container {
+            position: relative;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(40px);
+            filter: blur(8px);
+            transition: opacity 1.4s ease-out, transform 1.4s ease-out, filter 1.4s ease-out;
+        }
+
+        .gift-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        /* CARRUSEL DE FOTOS */
+        .slider-wrapper {
+            padding: 0;
+            background-color: #F9F8F5;
+        }
+
+        .slider-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            background-color: #F9F8F5;
+            line-height: normal;
+        }
+
+        .slider-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            opacity: 0;
+            transform: scale(1.05);
+            transition: opacity 1.3s ease-in-out, transform 1.3s ease-in-out;
+        }
+
+        .slider-container img.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ANIMACIONES NÍTIDAS Y VISIBLES (SLIDE UP) */
+        .reveal-section {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.2s ease-out, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .gallery-reveal {
+            opacity: 0;
+            transform: translateY(50px) scale(0.98);
+            transition: opacity 1.3s ease-out, transform 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .gallery-reveal.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* SOBRE ELEGANTE */
+        .envelope-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #4A0E0E;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s ease;
+        }
+
+        .envelope-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .envelope-interactive-area {
+            position: absolute;
+            top: 52%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            z-index: 8;
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .wax-seal-button {
+            width: 120px;
+            height: 140px;
+            border-radius: 50%;
+            cursor: pointer;
+            outline: none;
+            background: transparent;
+            border: none;
+            animation: pulseSeal 2.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseSeal {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.06); }
+            100% { transform: scale(1); }
+        }
+
+        .view-text-container {
+            margin-top: 25px;
+            text-align: center;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .view-text {
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8px;
+            color: #FFFFFF;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            background: rgba(96, 22, 21, 0.35);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .open.envelope-container {
+            opacity: 0;
+            transform: scale(1.08);
+            visibility: hidden;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="mobile-screen">
+
+    <audio id="bg-music" src="cancion.mp3" loop></audio>
+
+    <div class="invitation-wrapper" id="invitation">
+
+        <!-- 1. PORTADA -->
+        <div class="image-section portada-section">
+            <img src="portada.jpg" alt="Portada">
+        </div>
+
+        <!-- 2. FECHA (CON CLASE DE ANIMACIÓN APLICADA CORRECTAMENTE) -->
+        <div class="image-section fecha-container reveal-section">
+            <img src="fecha.jpg" alt="Fecha">
+        </div>
+
+        <!-- 3. CONTADOR -->
+        <div class="contador-section">
+            <div class="tiempo">
+                <div class="unidad">
+                    <div class="numero" id="dias">00</div>
+                    <div class="texto">Días</div>
+                </div>
+
+                <div class="separador">:</div>
+
+                <div class="unidad">
+                    <div class="numero" id="horas">00</div>
+                    <div class="texto">Horas</div>
+                </div>
+
+                <div class="separador">:</div>
+
+                <div class="unidad">
+                    <div class="numero" id="minutos">00</div>
+                    <div class="texto">Minutos</div>
+                </div>
+
+                <div class="separador">:</div>
+
+                <div class="unidad">
+                    <div class="numero" id="segundos">00</div>
+                    <div class="texto">Segundos</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. CEREMONIA -->
+        <div class="image-section reveal-section">
+            <img src="ceremonia.jpg" alt="Ceremonia">
+        </div>
+
+        <!-- 5. RECEPCIÓN -->
+        <div class="image-section reveal-section">
+            <img src="recepcion.jpg" alt="Recepción">
+        </div>
+
+        <!-- 6. GALERÍA -->
+        <div class="image-section gallery-reveal">
+            <img src="galeria.jpg" alt="Galería de Fotos">
+        </div>
+
+        <!-- 7. CARRUSEL -->
+        <div class="slider-wrapper gallery-reveal">
+            <div class="slider-container" id="slider">
+                <img src="https://i.imgur.com/JvCetgP.jpeg" class="active">
+                <img src="https://i.imgur.com/isnY4DM.jpeg">
+                <img src="https://i.imgur.com/QgxIjrM.jpeg">
+                <img src="https://i.imgur.com/bYgCPwM.jpeg">
+                <img src="https://i.imgur.com/Wzi6iKE.jpeg">
+                <img src="https://i.imgur.com/wHOMpqw.jpeg">
+                <img src="https://i.imgur.com/JFTGtVd.jpeg">
+                <img src="https://i.imgur.com/8wQf0vV.jpeg">
+            </div>
+        </div>
+
+        <!-- 8. REGALO -->
+        <div class="image-section gift-container">
+            <img src="regalo.jpg" alt="Regalo">
+        </div>
+
+        <!-- 9. CIERRE -->
+        <div class="image-section reveal-section">
+            <img src="cierre.jpg" alt="Cierre">
+        </div>
+
+    </div>
+
+    <!-- SOBRE -->
+    <div class="envelope-container" id="envelope">
+        <div class="envelope-image-wrapper">
+            <img src="sobre.jpg" alt="Sobre de Invitación">
+            
+            <button class="envelope-interactive-area" onclick="openEnvelope()" aria-label="Abrir invitación">
+                <div class="wax-seal-button"></div>
+                <div class="view-text-container">
+                    <div class="view-text">
+                        Da click en el sello para ver la invitación
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let isOpen = false;
+    const music = document.getElementById("bg-music");
+    const wrapper = document.getElementById("invitation");
+
+    function openEnvelope() {
+        if (!isOpen) {
+            isOpen = true;
+            document.getElementById("envelope").classList.add("open");
+            wrapper.classList.add("open-portada");
+            
+            var playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function(error) {
+                    console.log("Audio no reproducido automáticamente:", error);
+                });
+            }
+
+            // Dispara las animaciones visibles al abrir el sobre
+            setTimeout(checkScroll, 300);
+        }
+    }
+
+    function checkScroll() {
+        const reveals = document.querySelectorAll('.reveal-section, .gallery-reveal, .gift-container');
+        const triggerBottom = wrapper.clientHeight * 0.95;
+
+        reveals.forEach(section => {
+            const sectionTop = section.getBoundingClientRect().top;
+            if (sectionTop < triggerBottom) {
+                section.classList.add('visible');
+            }
+        });
+    }
+
+    wrapper.addEventListener('scroll', checkScroll);
+
+    /* CARRUSEL */
+    const images = document.querySelectorAll('.slider-container img');
+    let current = 0;
+
+    setInterval(() => {
+        images[current].classList.remove('active');
+        current = (current + 1) % images.length;
+        images[current].classList.add('active');
+    }, 3200);
+
+    /* CONTADOR */
+    const fechaEvento = new Date("November 14, 2026 17:30:00").getTime();
+
+    function actualizarContador() {
+        const ahora = new Date().getTime();
+        const diferencia = fechaEvento - ahora;
+
+        if (diferencia <= 0) {
+            document.getElementById("dias").innerHTML = "00";
+            document.getElementById("horas").innerHTML = "00";
+            document.getElementById("minutos").innerHTML = "00";
+            document.getElementById("segundos").innerHTML = "00";
+            return;
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        document.getElementById("dias").innerHTML = String(dias).padStart(2, "0");
+        document.getElementById("horas").innerHTML = String(horas).padStart(2, "0");
+        document.getElementById("minutos").innerHTML = String(minutos).padStart(2, "0");
+        document.getElementById("segundos").innerHTML = String(segundos).padStart(2, "0");
+    }
+
+    actualizarContador();
+    setInterval(actualizarContador, 1000);
+</script>
+
+</body>
+</html>
